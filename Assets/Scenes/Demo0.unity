@@ -720,13 +720,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19613c3ecf4dbfc4ab061d542e2a4a9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_NearClipPlane: -0.1
-  m_FarClipPlane: 3.65
+  m_NearClipPlane: 0.01
+  m_FarClipPlane: 5.21
   m_FieldOfView: 60
   m_AspectRatio: 1
-  m_Orthographic: 0
+  m_Orthographic: 1
   m_OrthographicSize: 0.55
-  m_Material: {fileID: 2100000, guid: d6553866faeb1d749945edc39876ac3f, type: 2}
+  material: {fileID: 2100000, guid: d6553866faeb1d749945edc39876ac3f, type: 2}
 --- !u!1 &1676562875
 GameObject:
   m_ObjectHideFlags: 0
