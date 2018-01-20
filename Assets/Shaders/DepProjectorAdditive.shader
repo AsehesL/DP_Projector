@@ -3,6 +3,7 @@
 	Properties
 	{
 		_Shadow ("Shadow", 2D) = "white" {}
+		_FalloffTex("FallOff", 2D) = "white" {}
 	}
 	SubShader
 	{
@@ -36,9 +37,11 @@
 			};
 
 			sampler2D _Shadow;
+			sampler2D _FalloffTex;
 			sampler2D _CameraDepthTexture;
 
 			float4x4 internal_WorldToProjector;
+			float4x4 internal_WorldToProjectorClip;
 			
 			v2f vert (appdata v)
 			{
@@ -57,6 +60,8 @@
 
 				projPos = mul(unity_CameraInvProjection, projPos);
 				projPos = mul(unity_MatrixInvV, projPos);
+				half4 clippos = mul(internal_WorldToProjectorClip, projPos);
+				clippos /= clippos.w;
 				projPos = mul(internal_WorldToProjector, projPos);
 				projPos /= projPos.w;
 
@@ -65,8 +70,9 @@
 				fixed2 discardAlpha = step(0, pjUV.xy)*step(pjUV.xy, 1);
 
 				fixed4 col = tex2D(_Shadow, pjUV);
+				fixed4 texF = tex2D(_FalloffTex, clippos.xy);
 
-				col.rgb *= discardAlpha.x*discardAlpha.y;
+				col.rgb *= discardAlpha.x*discardAlpha.y*texF.g;
 				// apply fog
 				UNITY_APPLY_FOG(i.fogCoord, col);
 				return col;

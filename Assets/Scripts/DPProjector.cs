@@ -108,6 +108,7 @@ public class DPProjector : MonoBehaviour
 
     private Matrix4x4 m_WorldToProjector;
     private Matrix4x4 m_Projector;
+    private Matrix4x4 m_ProjectorClip = default(Matrix4x4);
 
     private Matrix4x4 m_WorldToLocal;
 
@@ -167,8 +168,16 @@ public class DPProjector : MonoBehaviour
 
         m_WorldToLocal = transform.worldToLocalMatrix;
 
+        m_ProjectorClip.m02 = -1/(m_FarClipPlane - m_NearClipPlane);
+        m_ProjectorClip.m03 = -m_NearClipPlane/(m_FarClipPlane - m_NearClipPlane);
+        m_ProjectorClip.m13 = 0.5f;
+        m_ProjectorClip.m33 = 1;
+
         if (material != null)
+        {
             material.SetMatrix("internal_WorldToProjector", m_WorldToProjector);
+            material.SetMatrix("internal_WorldToProjectorClip", m_ProjectorClip*toLocal);
+        }
     }
 
     void OnDrawGizmosSelected()
