@@ -7,11 +7,10 @@ public class DPProjectorMesh
     private Mesh m_Mesh;
 
     private List<Vector3> m_VertexList;
-    private List<Color> m_ColorList;
     private List<int> m_IndexeList;
 
-    private MeshFilter m_MeshFilter;
-    private MeshRenderer m_MeshRenderer;
+    //private MeshFilter m_MeshFilter;
+    //private MeshRenderer m_MeshRenderer;
 
     private GameObject m_Parent;
 
@@ -19,7 +18,6 @@ public class DPProjectorMesh
     {
         m_Parent = parent;
         m_VertexList = new List<Vector3>();
-        m_ColorList = new List<Color>();
         m_IndexeList = new List<int>();
     }
 
@@ -50,39 +48,45 @@ public class DPProjectorMesh
             SetFaces();
         }
         m_Mesh.Clear();
-        if (m_MeshFilter == null)
-        {
-            m_MeshFilter = new GameObject("[PjMesh]").AddComponent<MeshFilter>();
-            m_MeshFilter.transform.SetParent(m_Parent.transform, false);
-            m_MeshFilter.sharedMesh = m_Mesh;
-        }
-        if (m_MeshRenderer == null)
-        {
-            m_MeshRenderer = m_MeshFilter.gameObject.AddComponent<MeshRenderer>();
-        }
+        //if (m_MeshFilter == null)
+        //{
+        //    m_MeshFilter = new GameObject("[PjMesh]").AddComponent<MeshFilter>();
+        //    m_MeshFilter.transform.SetParent(m_Parent.transform, false);
+        //    m_MeshFilter.sharedMesh = m_Mesh;
+        //}
+        //if (m_MeshRenderer == null)
+        //{
+        //    m_MeshRenderer = m_MeshFilter.gameObject.AddComponent<MeshRenderer>();
+        //}
 
-        SetVertex(p1, Color.white, 0);
-        SetVertex(p2, Color.white, 1);
-        SetVertex(p3, Color.white, 2);
-        SetVertex(p4, Color.white, 3);
-        SetVertex(p5, Color.white, 4);
-        SetVertex(p6, Color.white, 5);
-        SetVertex(p7, Color.white, 6);
-        SetVertex(p8, Color.white, 7);
+        SetVertex(p1, 0);
+        SetVertex(p2, 1);
+        SetVertex(p3, 2);
+        SetVertex(p4, 3);
+        SetVertex(p5, 4);
+        SetVertex(p6, 5);
+        SetVertex(p7, 6);
+        SetVertex(p8, 7);
 
         m_Mesh.SetVertices(m_VertexList);
-        m_Mesh.SetColors(m_ColorList);
         m_Mesh.SetTriangles(m_IndexeList, 0);
     }
 
-    public void RefreshMaterial(Material material)
+    public void DrawMesh(Material material, Matrix4x4 matrix, int layer)
     {
         if (material == null)
-            m_MeshRenderer.enabled = false;
-        else
-            m_MeshRenderer.enabled = true;
-        m_MeshRenderer.sharedMaterial = material;
+            return;
+        Graphics.DrawMesh(m_Mesh, matrix, material, layer);
     }
+
+    //public void RefreshMaterial(Material material)
+    //{
+    //    if (material == null)
+    //        m_MeshRenderer.enabled = false;
+    //    else
+    //        m_MeshRenderer.enabled = true;
+    //    m_MeshRenderer.sharedMaterial = material;
+    //}
 
     public void Release()
     {
@@ -90,22 +94,19 @@ public class DPProjectorMesh
             Object.Destroy(m_Mesh);
         m_Mesh = null;
         m_VertexList = null;
-        m_ColorList = null;
         m_IndexeList = null;
     }
 
-    private void SetVertex(Vector3 position, Color color, int index)
+    private void SetVertex(Vector3 position, int index)
     {
         if (m_VertexList == null) return;
         if (index >= m_VertexList.Count)
         {
             m_VertexList.Add(position);
-            m_ColorList.Add(color);
         }
         else
         {
             m_VertexList[index] = position;
-            m_ColorList[index] = color;
         }
     }
 
