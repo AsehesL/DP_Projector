@@ -120,7 +120,7 @@ public class DPProjector : MonoBehaviour
         RecalculateMatrix();
         
         
-        m_Mesh = new DPProjectorMesh(gameObject);
+        m_Mesh = new DPProjectorMesh();
         m_Mesh.RebuildMesh(m_Projector);
     }
 

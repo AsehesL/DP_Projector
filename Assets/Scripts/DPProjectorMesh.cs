@@ -9,14 +9,8 @@ public class DPProjectorMesh
     private List<Vector3> m_VertexList;
     private List<int> m_IndexeList;
 
-    //private MeshFilter m_MeshFilter;
-    //private MeshRenderer m_MeshRenderer;
-
-    private GameObject m_Parent;
-
-    public DPProjectorMesh(GameObject parent)
+    public DPProjectorMesh()
     {
-        m_Parent = parent;
         m_VertexList = new List<Vector3>();
         m_IndexeList = new List<int>();
     }
@@ -45,19 +39,10 @@ public class DPProjectorMesh
         if (m_Mesh == null)
         {
             m_Mesh = new Mesh();
+            m_Mesh.MarkDynamic();
             SetFaces();
         }
         m_Mesh.Clear();
-        //if (m_MeshFilter == null)
-        //{
-        //    m_MeshFilter = new GameObject("[PjMesh]").AddComponent<MeshFilter>();
-        //    m_MeshFilter.transform.SetParent(m_Parent.transform, false);
-        //    m_MeshFilter.sharedMesh = m_Mesh;
-        //}
-        //if (m_MeshRenderer == null)
-        //{
-        //    m_MeshRenderer = m_MeshFilter.gameObject.AddComponent<MeshRenderer>();
-        //}
 
         SetVertex(p1, 0);
         SetVertex(p2, 1);
@@ -78,15 +63,6 @@ public class DPProjectorMesh
             return;
         Graphics.DrawMesh(m_Mesh, matrix, material, layer);
     }
-
-    //public void RefreshMaterial(Material material)
-    //{
-    //    if (material == null)
-    //        m_MeshRenderer.enabled = false;
-    //    else
-    //        m_MeshRenderer.enabled = true;
-    //    m_MeshRenderer.sharedMaterial = material;
-    //}
 
     public void Release()
     {
